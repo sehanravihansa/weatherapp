@@ -1,0 +1,93 @@
+/* General Styles */
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #1e1e2f, #252540);
+    color: #f0f0f0;
+    text-align: center;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Fullscreen layout */
+}
+
+/* Title Styles */
+h1 {
+    margin-bottom: 20px; /* Space between title and search bar */
+    font-size: 2.5em; /* Larger font size for the title */
+    color: #ffffff; /* Change title color to white for better contrast */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow for better visibility */
+}
+
+/* Search Bar Container */
+.search-bar-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(40, 40, 60, 0.9);
+    padding: 15px; /* Increased padding for better spacing */
+    border-radius: 50px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    width: 90%;
+    max-width: 500px; /* Increased max width */
+}
+
+/* Search Input */
+.search-bar-container input {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 50px;
+    outline: none;
+    font-size: 16px;
+    background-color: #2d2d44;
+    color: #f0f0f0;
+}
+
+.search-bar-container input::placeholder {
+    color: #a1a1b5;
+}
+
+/* Search Button */
+.search-bar-container button {
+    padding: 12px 20px; /* Increased button padding for better click area */
+    margin-left: 10px;
+    border: none;
+    background: #4e8dff;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 50px;
+}
+
+.search-bar-container button:hover {
+   background: #3b6fd8; /* Darker shade on hover */
+}
+
+.search-bar-container button:hover {
+   box-shadow :0px 4px 15px rgba(78,141,255, .5); /* Add shadow on hover for depth effect */
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 600px) {
+   .search-bar-container {
+       width :95%; /* Adjust for smaller screens */
+       flex-direction :column; /* Stack input and button vertically on small screens */
+       align-items :stretch; /* Stretch to full width */
+       margin-top :10px; /* Margin above search bar in small screens */
+   }
+
+   .search-bar-container button {
+       padding-top :12px; 
+       padding-bottom :12px; 
+       margin-left :0 ; 
+       margin-top :10px ; 
+       font-size :14px ; 
+   }
+
+   .search-bar-container input {
+       font-size :14px ;
+       padding :10px ;
+   }
+}

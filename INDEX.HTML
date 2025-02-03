@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #1e1e2f, #252540);
+            color: #f0f0f0;
+            text-align: center;
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Fullscreen layout */
+        }
+
+        /* Title Styles */
+        h1 {
+            margin-bottom: 20px; /* Space between title and search bar */
+            font-size: 2.5em; /* Larger font size for the title */
+            color: #ffffff; /* Change title color to white for better contrast */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow for better visibility */
+        }
+
+        /* Search Bar Container */
+        .search-bar-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(40, 40, 60, 0.9);
+            padding: 15px; /* Increased padding for better spacing */
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            width: 90%;
+            max-width: 500px; /* Increased max width */
+        }
+
+        .suggestions {
+            position: absolute; /* Position suggestions below the input */
+            background-color: rgba(40, 40, 60, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            width: calc(90% - 20px); /* Adjust width to match input */
+            max-width: 500px; 
+            z-index: 100; /* Ensure it appears above other elements */
+        }
+
+        .suggestion-item {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .suggestion-item:hover {
+            background-color: #3b6fd8; /* Highlight on hover */
+        }
+
+        /* Search Input and Button Styles (same as before) */
+        .search-bar-container input {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 50px;
+            outline: none;
+            font-size: 16px;
+            background-color: #2d2d44;
+            color: #f0f0f0;
+        }
+
+        .search-bar-container button {
+            padding: 12px 20px; 
+            margin-left: 10px;
+            border: none;
+            background: #4e8dff;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 50px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather App</h1>
+    <div class="search-bar-container">
+        <input type="text" placeholder="Search for city or location" id="cityInput">
+        <button id="searchBtn">Search</button>
+    </div>
+    <div class="suggestions" id="suggestions"></div> <!-- Suggestions container -->
+    
+    <script>
+        const apiKey = '4e3dd198f29bf5fb0768d524df1a0833'; // Your API key
+        const suggestionsContainer = document.getElementById('suggestions');
+        
+        // Sample city suggestions
+        const cities = ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"];
+
+        // Select elements from the DOM
+        const searchBtn = document.getElementById('searchBtn');
+        const cityInput = document.getElementById('cityInput');
+
+        // Add event listener for the search button
+        searchBtn.addEventListener('click', () => {
+          const city = cityInput.value.trim(); // Trim to avoid extra spaces
+          if (city) {
+              fetchWeather(city);
+          } else {
+              alert('Please enter a city name!');
+          }
+          suggestionsContainer.innerHTML = ''; // Clear suggestions after search
+        });
+
+        // Function to fetch weather data from the API
+        function fetchWeather(city) {
+          const apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`;
+
+          fetch(apiUrl)
+              .then(response => response.json())
+              .then(data => {
+                  if (data.cod === 200) {
+                      alert(
+                          `Weather in ${data.name}\n` +
+                          `Temperature: ${data.main.temp}°C\n` +
+                          `Condition: ${data.weather[0].description}\n` +
+                          `Humidity: ${data.main.humidity}%\n` +
+                          `Wind Speed: ${data.wind.speed} m/s`
+                      );
+                  } else {
+                      alert('City not found! Please try again.');
+                  }
+              })
+              .catch(error => {
+                  console.error('Error fetching data:', error);
+                  alert('Unable to fetch weather data. Please try again later.');
+              });
+        }
+
+        // Function to show suggestions based on user input
+        cityInput.addEventListener('input', () => {
+          const inputValue = cityInput.value.toLowerCase();
+          suggestionsContainer.innerHTML = ''; // Clear previous suggestions
+
+          if (inputValue) {
+              const filteredCities = cities.filter(city => city.toLowerCase().startsWith(inputValue));
+              
+              filteredCities.forEach(city => {
+                  const suggestionItem = document.createElement('div');
+                  suggestionItem.classList.add('suggestion-item');
+                  suggestionItem.textContent = city;
+
+                  suggestionItem.addEventListener('click', () => {
+                      cityInput.value = city; // Set input value to selected suggestion
+                      suggestionsContainer.innerHTML = ''; // Clear suggestions
+                  });
+
+                  suggestionsContainer.appendChild(suggestionItem);
+              });
+          }
+        });
+
+    </script>
+</body>
+</html>
